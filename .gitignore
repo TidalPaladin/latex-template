@@ -20,5 +20,6 @@ tmp*
 *.bcf
 *.synctex.gz
 
+.vscode/
 build/
 svg-inkscape/

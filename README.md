@@ -10,6 +10,7 @@ Use the Makefile targets from the repository root:
 ```sh
 make
 make check
+make test
 make overleaf-zip
 make arxiv-zip
 make arxiv-check
@@ -17,7 +18,10 @@ make clean
 ```
 
 - `make` builds `build/main.pdf`.
-- `make check` runs `chktex` and a strict `latexmk` build.
+- `make check` runs `chktex` and a strict `latexmk` build with shell escape
+  enabled for SVG conversion.
+- `make test` verifies that the Makefile can build a minimal document using
+  `\includesvg`.
 - `make overleaf-zip` creates `build/main-overleaf.zip`, a source archive for
   uploading to Overleaf.
 - `make arxiv-zip` creates `build/main-arxiv.zip`, a source archive for arXiv.

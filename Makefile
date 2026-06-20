@@ -2,7 +2,7 @@ PAPER ?= main
 BUILD_DIR := build
 LATEXMK := latexmk
 LATEXMK_STRICT_FLAGS := -pdf -Werror -interaction=nonstopmode -halt-on-error -file-line-error
-LATEXMK_FLAGS := $(LATEXMK_STRICT_FLAGS) -outdir=$(BUILD_DIR)
+LATEXMK_FLAGS := $(LATEXMK_STRICT_FLAGS) -shell-escape -outdir=$(BUILD_DIR)
 CHKTEX := chktex
 ZIP ?= zip
 UNZIP ?= unzip
@@ -18,7 +18,7 @@ OPTIONAL_SOURCE_DIRS := figures tables tikz
 SOURCE_DIR_FILES := $(shell find $(OPTIONAL_SOURCE_DIRS) -type f 2>/dev/null)
 SOURCE_DEPS := $(PAPER).tex references.bib $(SOURCE_DIR_FILES)
 
-.PHONY: all check lint overleaf-zip arxiv-zip arxiv-check clean reset clean-root-artifacts
+.PHONY: all check test check-svg-build lint overleaf-zip arxiv-zip arxiv-check clean reset clean-root-artifacts
 
 all: $(BUILD_DIR)/$(PAPER).pdf
 
@@ -29,6 +29,11 @@ $(BUILD_DIR)/$(PAPER).pdf: $(SOURCE_DEPS) | $(BUILD_DIR) clean-root-artifacts
 	$(LATEXMK) $(LATEXMK_FLAGS) $(PAPER).tex
 
 check: lint $(BUILD_DIR)/$(PAPER).pdf
+
+test: check-svg-build
+
+check-svg-build: scripts/check_svg_build.sh
+	./scripts/check_svg_build.sh
 
 lint:
 	$(CHKTEX) -q $(PAPER).tex
