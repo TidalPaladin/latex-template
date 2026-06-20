@@ -18,3 +18,7 @@ tmp*
 *.run.xml
 *.nav
 *.bcf
+*.synctex.gz
+
+build/
+svg-inkscape/
