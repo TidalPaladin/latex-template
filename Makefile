@@ -6,10 +6,12 @@ LATEXMK_FLAGS := $(LATEXMK_STRICT_FLAGS) -shell-escape -outdir=$(BUILD_DIR)
 CHKTEX := chktex
 ZIP ?= zip
 UNZIP ?= unzip
+ARXIV_PRUNE ?= 1
 
 LATEX_ARTIFACT_EXTS := aux bbl blg fdb_latexmk fls log out pdf toc lof lot nav snm run.xml bcf synctex.gz
 ROOT_ARTIFACTS := $(addprefix $(PAPER).,$(LATEX_ARTIFACT_EXTS))
 PAPER_BBL := $(BUILD_DIR)/$(PAPER).bbl
+PAPER_FLS := $(BUILD_DIR)/$(PAPER).fls
 OVERLEAF_ZIP := $(BUILD_DIR)/$(PAPER)-overleaf.zip
 OVERLEAF_STAGE := $(BUILD_DIR)/overleaf-src
 ARXIV_ZIP := $(BUILD_DIR)/$(PAPER)-arxiv.zip
@@ -49,8 +51,11 @@ arxiv-zip: $(ARXIV_ZIP)
 $(PAPER_BBL): $(BUILD_DIR)/$(PAPER).pdf
 	test -f $@
 
-$(ARXIV_ZIP): $(SOURCE_DEPS) $(PAPER_BBL) | $(BUILD_DIR)
-	./scripts/create_source_bundle.sh arxiv "$(PAPER)" "$(ARXIV_STAGE)" "$@"
+$(PAPER_FLS): $(BUILD_DIR)/$(PAPER).pdf
+	test -f $@
+
+$(ARXIV_ZIP): $(SOURCE_DEPS) $(PAPER_BBL) $(PAPER_FLS) | $(BUILD_DIR)
+	ARXIV_PRUNE="$(ARXIV_PRUNE)" ./scripts/create_source_bundle.sh arxiv "$(PAPER)" "$(ARXIV_STAGE)" "$@"
 
 arxiv-check: $(ARXIV_ZIP)
 	$(UNZIP) -t $(ARXIV_ZIP)
