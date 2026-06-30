@@ -11,7 +11,8 @@ cleanup() {
 trap cleanup EXIT
 
 cp "$repo_root/Makefile" "$repo_root/references.bib" "$tmpdir"/
-mkdir -p "$tmpdir/figures"
+mkdir -p "$tmpdir/figures" "$tmpdir/scripts"
+cp "$repo_root/scripts/extract_arxiv_metadata.sh" "$tmpdir/scripts"/
 
 cat > "$tmpdir/main.tex" <<'TEX'
 \documentclass{article}
