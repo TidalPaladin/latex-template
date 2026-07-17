@@ -23,6 +23,11 @@ Pandoc is required for the arXiv metadata extraction and abstract-length check t
 ## Coding Style & Naming Conventions
 Keep LaTeX source readable: one logical paragraph per block, descriptive labels, and package comments only when they explain a non-obvious dependency. Use lowercase, hyphenated or underscored filenames for assets. Keep shell scripts in Bash with `set -euo pipefail`, quoted paths, and clear error messages.
 
+## Manuscript Accessibility
+- Treat the abstract as standalone. Expand each non-universal acronym at first use there and again at first use in the body.
+- Add concise alt text that describes the purpose or key content of every informational `\includegraphics`, `\includesvg`, and top-level TikZ figure; mark decorative graphics as artifacts. Captions do not replace PDF alternate descriptions. Give tables descriptive captions and explicit row and column headers.
+- This template does not enable tagged PDF output. In projects that do, require `Tagged: yes` in `pdfinfo` and an alternate description for every `Figure` in `pdfinfo -struct`; source-level `alt` keys alone are not proof.
+
 ## Testing Guidelines
 Run `make check` before handoff for manuscript changes. Run `make test` when touching SVG support, `\includesvg`, arXiv metadata extraction, or Makefile shell-escape behavior. Run `make arxiv-check` after changing archive packaging, bibliography handling, arXiv metadata checks, or optional source-directory copying.
 
